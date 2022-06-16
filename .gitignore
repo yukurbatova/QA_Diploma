@@ -32,3 +32,5 @@ build/
 
 ### DB ###
 msdata
+
+gate-simulator/node_modules
