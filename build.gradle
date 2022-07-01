@@ -14,13 +14,20 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
     testImplementation 'mysql:mysql-connector-java:8.0.22'
     //testImplementation 'org.postgresql:postgresql:42.2.24.jre7'
     testImplementation 'com.github.javafaker:javafaker:1.0.2'
+    testImplementation 'com.codeborne:selenide:6.6.5'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
 }
 
 test {
     useJUnitPlatform()
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
 }
