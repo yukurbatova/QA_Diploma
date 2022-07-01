@@ -15,7 +15,7 @@ import java.util.Properties;
 public class DBHelper {
     @SneakyThrows
     public static Connection getConnection() {
-        //var file = new File("D:/QualityAssurance/Netology/QA_Diploma/application.properties");
+        //var file = new File("application.properties");
         //var properties = new Properties();
         //properties.load(new FileReader(file));
         return DriverManager.getConnection(
