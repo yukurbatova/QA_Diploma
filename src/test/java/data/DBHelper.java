@@ -15,15 +15,10 @@ import java.util.Properties;
 public class DBHelper {
     @SneakyThrows
     public static Connection getConnection() {
-        //var file = new File("D:/QualityAssurance/Netology/QA_Diploma/application.properties");
-        //var properties = new Properties();
-        //properties.load(new FileReader(file));
-        return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/app", "app", "pass"
-                //properties.getProperty("spring.datasource.url"),
-                //properties.getProperty("spring.datasource.username"),
-                //properties.getProperty("spring.datasource.password=pass")
-        );
+        var dbUrl = System.getProperty("db.url");
+        var dbLogin = System.getProperty("db.login");
+        var dbPassword = System.getProperty("db.password");
+        return DriverManager.getConnection(dbUrl,dbLogin,dbPassword);
     }
 
     @SneakyThrows
@@ -33,11 +28,11 @@ public class DBHelper {
         var debitQuery = "DELETE FROM payment_entity";
         var runner = new QueryRunner();
 
-        try ( var connect = getConnection();
+        try (var connect = getConnection();
         ) {
-            runner.update(connect,creditQuery);
-            runner.update(connect,orderQuery);
-            runner.update(connect,debitQuery);
+            runner.update(connect, creditQuery);
+            runner.update(connect, orderQuery);
+            runner.update(connect, debitQuery);
         }
     }
 
@@ -46,7 +41,19 @@ public class DBHelper {
         var statusQuery = "SELECT status FROM payment_entity ORDER BY created DESC LIMIT 1";
         var runner = new QueryRunner();
 
-        try ( var connect = getConnection();
+        try (var connect = getConnection();
+        ) {
+            var status = runner.query(connect, statusQuery, new ScalarHandler<>());
+            return (String) status;
+        }
+    }
+
+    @SneakyThrows
+    public static String getPaymentCreditStatus() {
+        var statusQuery = "SELECT status FROM credit_request_entity ORDER BY created DESC LIMIT 1";
+        var runner = new QueryRunner();
+
+        try (var connect = getConnection();
         ) {
             var status = runner.query(connect, statusQuery, new ScalarHandler<>());
             return (String) status;

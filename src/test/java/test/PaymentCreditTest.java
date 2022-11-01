@@ -1,33 +1,23 @@
 package test;
 
-import com.codeborne.selenide.logevents.SelenideLogger;
 import data.DBHelper;
 import data.DataHelper;
-import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import page.DashboardPage;
+import page.PaymentCreditPage;
 import page.PaymentDebitPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PaymentDebitTest {
-
-    @BeforeAll
-    static void setUpAll() {
-        SelenideLogger.addListener("allure", new AllureSelenide());
-    }
-
-    @AfterAll
-    static void tearDownAll() {
-        SelenideLogger.removeListener("allure");
-    }
-
+public class PaymentCreditTest {
     @BeforeEach
     void setUp() {
         open("http://localhost:8080/");
         var dashboardPage = new DashboardPage();
-        dashboardPage.getPaymentDebit();
+        dashboardPage.getPaymentCredit();
     }
 
     @AfterEach
@@ -38,242 +28,242 @@ public class PaymentDebitTest {
     //Номер карты
 
     @Test
-    void shouldPaymentDebitApprovedCardTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditApprovedCardTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkSuccessNotification();
-        var paymentStatus = DBHelper.getPaymentDebitStatus();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkSuccessNotification();
+        var paymentStatus = DBHelper.getPaymentCreditStatus();
         assertEquals("APPROVED", paymentStatus);
     }
 
     @Test
-    void shouldPaymentDebitDeclinedCardTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditDeclinedCardTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getDeclinedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkErrorNotification();
-        var paymentStatus = DBHelper.getPaymentDebitStatus();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkErrorNotification();
+        var paymentStatus = DBHelper.getPaymentCreditStatus();
         assertEquals("DECLINED", paymentStatus);
     }
 
     @Test
-    void shouldPaymentDebitInvalidCardTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditInvalidCardTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getInvalidCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkErrorNotification();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkErrorNotification();
     }
 
     @Test
-    void shouldPaymentDebitNullCardNumberTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditNullCardNumberTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getNullCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkErrorNotification();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkErrorNotification();
     }
 
     @Test
-    void shouldPaymentDebitEmptyCardNumberTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditEmptyCardNumberTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getEmptyCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkEmptyFieldMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkEmptyFieldMessage();
     }
 
     @Test
-    void shouldPaymentDebitNotFormatCardNumberTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditNotFormatCardNumberTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getNotFormatCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkNotFormatMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkNotFormatMessage();
     }
 
     // Месяц
 
     @Test
-    void shouldPaymentDebitInvalidMonthTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditInvalidMonthTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getInvalidMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkInvalidExpirationMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkInvalidExpirationMessage();
     }
 
     @Test
-    void shouldPaymentDebitEmptyMonthTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditEmptyMonthTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getEmptyMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkEmptyFieldMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkEmptyFieldMessage();
     }
 
     @Test
-    void shouldPaymentDebitNotFormatMonthTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditNotFormatMonthTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getNotFormatMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkNotFormatMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkNotFormatMessage();
     }
 
     // Год
 
     @Test
-    void shouldPaymentDebitLastYearTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditLastYearTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getLastYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkExpirationMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkExpirationMessage();
     }
 
     @Test
-    void shouldPaymentDebitEmptyYearTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditEmptyYearTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getEmptyYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkEmptyFieldMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkEmptyFieldMessage();
     }
 
     @Test
-    void shouldPaymentDebitNotFormatYearTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditNotFormatYearTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getNotFormatYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkNotFormatMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkNotFormatMessage();
     }
 
     // Владелец
 
     @Test
-    void shouldPaymentDebitOwnerRusTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditOwnerRusTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getOwnerRus();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkNotFormatMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkNotFormatMessage();
     }
 
     @Test
-    void shouldPaymentDebitOwnerMinTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditOwnerMinTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getOwnerMin();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkNotFormatMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkNotFormatMessage();
     }
 
     @Test
-    void shouldPaymentDebitOwnerSpecialSymbolsTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditOwnerSpecialSymbolsTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getOwnerSpecialSymbols();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkNotFormatMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkNotFormatMessage();
     }
 
     @Test
-    void shouldPaymentDebitOwnerNumbersTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditOwnerNumbersTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getOwnerNumbers();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkNotFormatMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkNotFormatMessage();
     }
 
     @Test
-    void shouldPaymentDebitEmptyOwnerTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditEmptyOwnerTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getEmptyOwner();
         var cvccvv = DataHelper.getValidCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkEmptyFieldMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkEmptyFieldMessage();
     }
 
     // CVC/CVV
 
     @Test
-    void shouldPaymentDebitNotFormatCVCCVVTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditNotFormatCVCCVVTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getNotFormatCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkNotFormatMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkNotFormatMessage();
     }
 
     @Test
-    void shouldPaymentDebitEmptyCVCCVVTest() {
-        var paymentDebitPage = new PaymentDebitPage();
+    void shouldPaymentCreditEmptyCVCCVVTest() {
+        var paymentCreditPage = new PaymentCreditPage();
         var cardNumber = DataHelper.getApprovedCardNumber();
         var month = DataHelper.getCurrentMonth();
         var year = DataHelper.getCurrentYear();
         var owner = DataHelper.getValidOwner();
         var cvccvv = DataHelper.getEmptyCVCCVV();
-        paymentDebitPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
-        paymentDebitPage.checkEmptyFieldMessage();
+        paymentCreditPage.fillingCardInfo(cardNumber, month, year, owner, cvccvv);
+        paymentCreditPage.checkEmptyFieldMessage();
     }
 }
