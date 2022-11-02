@@ -13,7 +13,7 @@
 6. Запустить тесты с поддержкой MySQL:
     * `./gradlew clean test -Ddb.url=jdbc:mysql://localhost:3306/app`
 7. Запустить SUT с поддержкой PostgreSQL:
-   * `java -jar aqa-shop.jar -Dspring.datasource.url=jdbc:postgresql://localhost:5432/app -Dspring.datasource.username=app -Dspring.datasource.password=pass`
+   * `java  "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" "-Dspring.datasource.username=app" "-Dspring.datasource.password=pass" -jar aqa-shop.jar`
 8. Запустить тесты с поддержкой PostgreSQLSQL:
     * `./gradlew clean test -Ddb.url=jdbc:postgresql://localhost:5432/app`
 9. Сгенерировать отчет с помощью фреймворка Allure:
