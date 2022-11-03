@@ -9,7 +9,7 @@
 4. Запустить контейнеры: 
    * `docker-compose up -d`
 5. Запустить SUT с поддержкой MySQL:
-   * `java -jar aqa-shop.jar -Dspring.datasource.url=jdbc:mysql://localhost:3306/app -Dspring.datasource.username=app -Dspring.datasource.password=pass`
+   * `java  "-Dspring.datasource.url=jdbc:mysql://localhost:3306/app" "-Dspring.datasource.username=app" "-Dspring.datasource.password=pass" -jar aqa-shop.jar`
 6. Запустить тесты с поддержкой MySQL:
     * `./gradlew clean test -Ddb.url=jdbc:mysql://localhost:3306/app`
 7. Запустить SUT с поддержкой PostgreSQL:
